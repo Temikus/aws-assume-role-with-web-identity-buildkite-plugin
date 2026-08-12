@@ -67,10 +67,11 @@ if [[ ${oidc_cmd_status:-0} -ne 0 ]]; then
   echo ""
   echo "${oidc_err}"
   echo ""
-  echo "The agent retries 429 and 5xx five times internally, so a failure here is"
-  echo "usually non-retryable. 'failed to decode JSON response' means the endpoint"
-  echo "returned a 2xx with a non-JSON body - retry, and if it persists raise it"
-  echo "with Buildkite support quoting job ${BUILDKITE_JOB_ID:-unknown}."
+  echo "The agent makes up to 5 attempts internally for 429, 5xx, and transient"
+  echo "network errors, so a failure here is usually non-retryable."
+  echo "'failed to decode JSON response' means the endpoint returned a 2xx with a"
+  echo "non-JSON body - retry, and if it persists raise it with Buildkite support"
+  echo "quoting job ${BUILDKITE_JOB_ID:-unknown}."
   exit 1
 elif [[ -n "$oidc_err" ]]; then
   # Retry warnings on an eventually-successful request are worth keeping
